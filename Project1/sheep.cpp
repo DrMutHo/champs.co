@@ -60,14 +60,14 @@ void Sheep::randomAction() {
 			//std::cout << v.getX() << " " << v.getY() << " " << v.length() << std::endl;
 			status = WALK;
 			moveRandom(v);
-			checkRanAct = !trackRandom(v);
+			checkRanAct = trackRandom(v);
 		}
 	}
 }
 
 bool Sheep::trackRandom(Vector2D v) {
-	if (v.length() < 10 ) return true;
-	return false;
+	if (v.length() < 10 ) return false;
+	return true;
 }
 
 bool Sheep::trackWolf(Vector2D v) {
