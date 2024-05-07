@@ -26,8 +26,10 @@ public:
 	virtual void render();
 	void loadClips();
 	void randomAction();
+	void moveRandom(Vector2D v);
 	//bool isSafeFromWolf();
 	bool trackWolf(Vector2D v);
+	bool trackRandom(Vector2D v);
 	void moveToSafeZone(Vector2D v);
 	void actions(Wolf* wolf);
 	bool isCollideHorizontal(int vel);

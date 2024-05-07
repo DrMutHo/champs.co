@@ -8,7 +8,7 @@ void EntityManager::init() {
 		wolves.push_back(wolf);
 	}
 	Sheep::texture = Texture::loadImage(Global::renderer, "./Project1/resources/object/shep.png");
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 1; i++) {
 		Sheep* shep = new Sheep(Global::renderer, ("sheep" + std::to_string(i + 1)));
 		shep->init();
 		sheep.push_back(shep);
