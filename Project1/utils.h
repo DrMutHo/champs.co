@@ -14,6 +14,7 @@ namespace Global {
 	extern GameState gamestate;
 	extern SDL_Renderer* renderer;
 	extern bool gameover;
+	extern int cntSafeZone;
 }
 
 namespace Rand {

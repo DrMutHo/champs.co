@@ -98,7 +98,7 @@ void Wolf::loadClips() {
 
 void Wolf::init() {
 	SDL_Log("wolf init \n");
-	setLocation({ 600, 320 });
+	setLocation({ 800, 480 });
 	loadClips();
 	des.w = 100;
 	des.h = 80;

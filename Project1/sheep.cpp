@@ -1,4 +1,12 @@
 #include "sheep.h"
+#include <cstdlib> // For rand() and RAND_MAX
+#include <cmath> 
+
+
+
+static float customRandFloat(float min, float max) {
+	return min + static_cast<float>(rand()) / static_cast<float>(RAND_MAX / (max - min));
+}
 
 SDL_Texture* Sheep::texture = nullptr;
 
@@ -46,46 +54,10 @@ void Sheep::actions(Wolf* wolf) {
 	}
 }
 
-void Sheep::randomAction() {
-	int randomNum = Rand::Randint(0, 999);
-	if (randomNum < 2) {
-		bool checkRanAct = true;
-		int ranX = Rand::Randint(380, 1000);
-		int ranY = Rand::Randint(250, 500);
-		std::cout << ranX << " " << ranY << std::endl;
-		while (checkRanAct) {
-			int sheepX = getPosition().x;
-			int sheepY = getPosition().y;
-			Vector2D v = Vector2D(ranX-sheepX, ranY - sheepY);
-			//std::cout << v.getX() << " " << v.getY() << " " << v.length() << std::endl;
-			status = WALK;
-			moveRandom(v);
-			checkRanAct = trackRandom(v);
-		}
-	}
-}
-
-bool Sheep::trackRandom(Vector2D v) {
-	if (v.length() < 10 ) return false;
-	return true;
-}
 
 bool Sheep::trackWolf(Vector2D v) {
 	if (v.length() <= 32 * 10) return true;
 	return false;
-}
-
-void Sheep::moveRandom(Vector2D v) {
-	if (v.getX() > 0) flip = SDL_FLIP_HORIZONTAL;
-	else if (v.getX() < 0) flip = SDL_FLIP_NONE;
-	/*v.reverse();*/
-	//Vector2D t = v;
-	if (/*v.getX() != 0 && v.getY() != 0*/ true) v.normalize();
-	if (!isCollideHorizontal(v.getX() * speed)) {
-		des.x += v.getX() * speed;
-		std::cout << "des X >> " << des.x << std::endl;
-	}
-	if (!isCollideVertical(v.getY() * speed)) des.y += v.getY() * speed;
 }
 
 void Sheep::moveToSafeZone(Vector2D v) {
@@ -96,7 +68,6 @@ void Sheep::moveToSafeZone(Vector2D v) {
 	if (/*v.getX() != 0 && v.getY() != 0*/ true) v.normalize();
 	if (!isCollideHorizontal(v.getX() * speed)) {
 		des.x += v.getX() * speed;
-		/*std::cout << "des X >> " << des.x << std::endl;*/
 	}
 	if (!isCollideVertical(v.getY() * speed)) des.y += v.getY() * speed;
 }
@@ -109,6 +80,33 @@ bool Sheep::isCollideHorizontal(int vel) {
 bool Sheep::isCollideVertical(int vel) {
 	if (des.y + vel < 0 || des.y + des.h + vel > SCREENHEIGHT) return true;
 	return false;
+}
+
+bool Sheep::isInSafeZone() {
+	int sheepX = getPosition().x;
+	int sheepY = getPosition().y;
+	if (sheepX >= 400 && sheepX <= 800 && sheepY >= 50 && sheepY <= 480) {
+		return true;
+	}
+}
+
+
+void Sheep::moveRandom() {
+	// Increment the wander angle to gradually change direction
+	currentAngle += customRandFloat(-0.1f, 0.1f); // Adjust the range of angle change as needed
+
+	// Calculate the velocity vector based on the wander angle and speed
+	Vector2D velocity(WANDER_SPEED * std::cos(currentAngle), WANDER_SPEED * std::sin(currentAngle));
+
+	// Update the position based on the velocity
+	int newX = des.x + static_cast<int>(velocity.getX());
+	int newY = des.y + static_cast<int>(velocity.getY());
+
+	// Ensure the new position is within screen bounds
+	if (newX >= 0 && newX + des.w <= SCREENWIDTH && newY >= 0 && newY + des.h <= SCREENHEIGHT) {
+		des.x = newX;
+		des.y = newY;
+	}
 }
 
 //void Sheep::randomAction() {

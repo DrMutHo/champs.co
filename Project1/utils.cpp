@@ -12,6 +12,7 @@ SDL_Texture* Texture::loadImage(SDL_Renderer* renderer, std::string path) {
 GameState Global::gamestate = PLAY;
 SDL_Renderer* Global::renderer = nullptr;
 bool Global::gameover = false;
+int Global::cntSafeZone = 0;
 
 int Rand::Randint(int min, int max) {
 	std::random_device rd;
