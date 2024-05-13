@@ -8,7 +8,7 @@ void EntityManager::init() {
 		wolves.push_back(wolf);
 	}
 	Sheep::texture = Texture::loadImage(Global::renderer, "./Project1/resources/object/shep.png");
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 6; i++) {
 		Sheep* shep = new Sheep(Global::renderer, ("sheep" + std::to_string(i + 1)));
 		shep->init();
 		sheep.push_back(shep);
@@ -27,12 +27,6 @@ void EntityManager::handleEvents(SDL_Event e) {
 	}
 	for (const auto& shep : sheep) { 
 		shep->actions(wolves[0]); 
-		shep->moveRandom();
-		if (shep->isInSafeZone()) {
-			res++;
-		}
 	}
-	Global::cntSafeZone = res;
-	std::cout << Global::cntSafeZone << std::endl;
 }
 
